@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  invameetingsdb:
+    image: invativa/invameetings.database
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DB_SERVER: "sqlserver"
+      DB_NAME: "InvaMeetings_Local"
+      DB_USER: "sa"
+      DB_PASSWORD: "D3vP4ssw0rd"
+    build:
+      context: src/InvaMeetings.Database
+    volumes:
+      - ./src/InvaMeetings.Database/Scripts:/app/Scripts
+    depends_on:
+      - sqlserver
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      SA_PASSWORD: "D3vP4ssw0rd"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - /var/opt/mssql
+    ports: 
+    - "1434:1433"
