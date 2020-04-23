@@ -1,0 +1,25 @@
+@page "/event"
+
+@using System;
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Event namn</h4>
+        <RadzenTextBox Style="margin-bottom: 20px" Change="@(args => EventNameBox(args, "TextBox"))" />
+
+    </div>
+</div>
+
+@code {
+    string value;
+
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    void EventNameBox(string value, string name)
+    {
+        events.Add(DateTime.Now, $"{name} value changed to {value}");
+        StateHasChanged();
+
+        Console.WriteLine(value);
+    }
+}
