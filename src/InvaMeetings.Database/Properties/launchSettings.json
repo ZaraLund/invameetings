@@ -9,6 +9,10 @@
         "DB_SERVER": "localhost,1434",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "InvaMeetings.Web": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\projekt\\invameetings\\src\\InvaMeeting.Web"
     }
   }
 }

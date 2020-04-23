@@ -1,6 +1,6 @@
 using System;
 
-namespace InvaMeeting.Web.Data
+namespace InvaMeetings.Web.Data
 {
     public class WeatherForecast
     {

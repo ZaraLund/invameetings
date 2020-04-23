@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvaMeeting.Web", "src\InvaMeeting.Web\InvaMeeting.Web.csproj", "{6D1C9A85-5255-4C6F-973E-DB45409811E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvaMeetings.Web", "src\InvaMeeting.Web\InvaMeetings.Web.csproj", "{6D1C9A85-5255-4C6F-973E-DB45409811E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvaMeetings.Database", "src\InvaMeetings.Database\InvaMeetings.Database.csproj", "{185D9B0C-18B3-4A02-848A-294393DF5B1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvaMeetings.Database", "src\InvaMeetings.Database\InvaMeetings.Database.csproj", "{185D9B0C-18B3-4A02-848A-294393DF5B1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,5 @@
 ﻿@page "/"
-@namespace InvaMeeting.Web.Pages
+@namespace InvaMeetings.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
@@ -8,12 +8,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>InvaMeeting.Web</title>
+    <title>InvaMeetings.Web</title>
     <base href="~/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
+
 </head>
 <body>
     <app>
@@ -32,5 +34,6 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    
 </body>
 </html>

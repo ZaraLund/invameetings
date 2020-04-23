@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InvaMeeting.Web.Data
+namespace InvaMeetings.Web.Data
 {
     public class WeatherForecastService
     {
