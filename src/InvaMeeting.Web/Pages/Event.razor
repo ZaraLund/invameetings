@@ -1,25 +1,50 @@
 @page "/event"
-
 @using System;
+@attribute [Authorize]
 
-<div class="row">
-    <div class="col-md-6">
-        <h4>Event namn</h4>
-        <RadzenTextBox Style="margin-bottom: 20px" Change="@(args => EventNameBox(args, "TextBox"))" />
+@if (eventModel == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenTemplateForm Data="@eventModel" Submit="@((EventModel args) => { Submit(args); })">
+        <div class="textfield">
+            <div class="col-md-6">
+                <h1>Add Events</h1>
 
-    </div>
-</div>
+                <h4>Event name: </h4>
+                <RadzenTextBox Style="margin-bottom: 10px" Name="name"  @bind-Value="eventModel.name" />
+
+                <h4>Address: </h4>
+                <RadzenTextBox Style="margin-bottom: 10px" Name="address"  @bind-Value="eventModel.address" />
+
+                <h4 style="margin-top: 20px">Select date: </h4>
+                <RadzenDatePicker @bind-Value="eventModel.date" TValue="DateTime?" ShowTime="true" DateFormat="yyyy/MM/dd HH:mm" Name="date"  />
+
+                <h4 style="margin-top: 20px"> Write a description: </h4>
+                <RadzenTextArea Placeholder="Write something here...." Style="margin-bottom: 20px" Name="description"  @bind-Value="eventModel.description" />
+
+                <!--<RadzenButton Click="@((args) => SaveEvent(args))" Text="Save" ButtonStyle="ButtonStyle.Secondary" Style="margin-bottom: 20px; width: 150px; margin-top: 20px; display:flex" />-->
+
+                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" Style="display: flex" />
+
+            </div>
+        </div>
+    </RadzenTemplateForm>
+}
+
 
 @code {
-    string value;
+    EventModel eventModel = new EventModel();
+    List<EventModel> eventList = new List<EventModel>();
 
-    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
-
-    void EventNameBox(string value, string name)
+    void Submit(EventModel args)
     {
-        events.Add(DateTime.Now, $"{name} value changed to {value}");
-        StateHasChanged();
-
-        Console.WriteLine(value);
+        foreach (var i in eventList)
+        {
+            Console.WriteLine(i.name);
+        }
     }
 }
+
