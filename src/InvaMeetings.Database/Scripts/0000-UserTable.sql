@@ -1,4 +1,5 @@
 ﻿USE [$DatabaseName$]
+GO
 CREATE TABLE [dbo].[User](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Firstname] [nvarchar](50) NOT NULL,

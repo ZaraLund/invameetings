@@ -14,10 +14,12 @@ namespace InvaMeetings.Database
             var user = Environment.GetEnvironmentVariable("DB_USER");
             var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
             var connectionString = $"Server={server}; Database={name}; Uid={user}; Pwd={password}";
+            
             if (IsDevelopment)
             {
                 EnsureDatabase.For.SqlDatabase(connectionString);
             }
+            
             var upgrader =
                 DeployChanges.To
                     .SqlDatabase(connectionString)
@@ -25,7 +27,9 @@ namespace InvaMeetings.Database
                     .WithScriptsFromFileSystem("Scripts")
                     .LogToConsole()
                     .Build();
+          
             var result = upgrader.PerformUpgrade();
+            
             if (!result.Successful)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -37,6 +41,7 @@ namespace InvaMeetings.Database
                 }
                 return -1;
             }
+            
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Success!");
             Console.ResetColor();

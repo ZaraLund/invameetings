@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="dbup" Version="4.3.0" />
+    <PackageReference Include="dbup" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
