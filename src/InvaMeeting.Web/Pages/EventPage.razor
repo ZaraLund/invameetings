@@ -1,0 +1,68 @@
+
+@page "/eventpage"
+
+@using InvaMeetings.Web.Data
+@inject EventController service
+
+
+<h1>Event List</h1>
+
+<p>This component demonstrates fetching data from Database.</p>
+
+
+
+@if (eventList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name:</th>
+                <th>Address:</th>
+                <th>Date:</th>
+                <th>Description:</th>
+                <th>Edit:</th>
+                <th>Delete:</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var eventItem in eventList)
+            {
+                <tr>
+                    <td>@eventItem.name</td>
+                    <td>@eventItem.address</td>
+                    <td>@eventItem.date</td>
+                    <td>@eventItem.description</td>
+                    <td><input type="button" class="btn btn-primary" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" value="Delete" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div>
+    <div>
+        <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add Event" @onclick="(() => InitializeTaskObject())" />
+    </div>
+   
+    <TaskDetail TaskObject=taskObject></TaskDetail>
+</div>
+
+
+@code {
+    List<EventModel> eventList;
+    EventModel taskObject = new EventModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        eventList = await service.Get();
+    }
+    private void InitializeTaskObject()
+    {
+        taskObject = new EventModel();
+        taskObject.date = DateTime.Now;
+    }
+}

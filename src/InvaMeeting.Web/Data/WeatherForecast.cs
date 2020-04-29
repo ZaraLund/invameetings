@@ -4,7 +4,7 @@ namespace InvaMeetings.Web.Data
 {
     public class WeatherForecast
     {
-        public DateTime Date { get; set; }
+        public DateTime Date1 { get; set; }
 
         public int TemperatureC { get; set; }
 

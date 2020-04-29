@@ -46,6 +46,8 @@ namespace InvaMeetings.Database
             Console.WriteLine("Success!");
             Console.ResetColor();
             return 0;
+
+
         }
     }
 }

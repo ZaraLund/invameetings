@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InvaMeetings.Web.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using InvaMeetings.Web.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvaMeetings.Web
 {
@@ -29,6 +31,14 @@ namespace InvaMeetings.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //New db code
+            services.AddDbContext<DatabaseContext>(
+            option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<EventController, EventControllers>();
+        
+            //Ends here
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
 

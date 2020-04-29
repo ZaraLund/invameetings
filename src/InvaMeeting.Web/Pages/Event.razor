@@ -2,6 +2,7 @@
 @using System;
 @attribute [Authorize]
 
+
 @if (eventModel == null)
 {
     <p><em>Loading...</em></p>
@@ -14,16 +15,16 @@ else
                 <h1>Add Events</h1>
 
                 <h4>Event name: </h4>
-                <RadzenTextBox Style="margin-bottom: 10px" Name="name"  @bind-Value="eventModel.name" />
+                <RadzenTextBox Style="margin-bottom: 10px" Name="name" @bind-Value="eventModel.name" />
 
                 <h4>Address: </h4>
-                <RadzenTextBox Style="margin-bottom: 10px" Name="address"  @bind-Value="eventModel.address" />
+                <RadzenTextBox Style="margin-bottom: 10px" Name="address" @bind-Value="eventModel.address" />
 
                 <h4 style="margin-top: 20px">Select date: </h4>
-                <RadzenDatePicker @bind-Value="eventModel.date" TValue="DateTime?" ShowTime="true" DateFormat="yyyy/MM/dd HH:mm" Name="date"  />
+                <RadzenDatePicker @bind-Value="eventModel.date" TValue="DateTime?" ShowTime="true" DateFormat="yyyy/MM/dd HH:mm" Name="date" />
 
                 <h4 style="margin-top: 20px"> Write a description: </h4>
-                <RadzenTextArea Placeholder="Write something here...." Style="margin-bottom: 20px" Name="description"  @bind-Value="eventModel.description" />
+                <RadzenTextArea Placeholder="Write something here...." Style="margin-bottom: 20px" Name="description" @bind-Value="eventModel.description" />
 
                 <!--<RadzenButton Click="@((args) => SaveEvent(args))" Text="Save" ButtonStyle="ButtonStyle.Secondary" Style="margin-bottom: 20px; width: 150px; margin-top: 20px; display:flex" />-->
 
@@ -45,6 +46,7 @@ else
         {
             Console.WriteLine(i.name);
         }
+
+        Console.WriteLine(args.date);
     }
 }
-
