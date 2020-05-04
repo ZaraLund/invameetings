@@ -7,8 +7,9 @@
       "destination": "wwwroot/lib/jquery/"
     },
     {
-      "library": "bootswatch@4.4.1",
-      "destination": "wwwroot/lib/bootswatch/"
+      "provider": "jsdelivr",
+      "library": "bootstrap@4.4.1",
+      "destination": "wwwroot/lib/bootstrap/"
     }
   ]
 }

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Blazored.Modal;
 
 namespace InvaMeetings.Web
 {
@@ -32,10 +33,11 @@ namespace InvaMeetings.Web
         public void ConfigureServices(IServiceCollection services)
         {
             //New db code
+            services.AddBlazoredModal();
             services.AddDbContext<DatabaseContext>(
             option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<EventController, EventControllers>();
+          
         
             //Ends here
 
@@ -110,6 +112,8 @@ namespace InvaMeetings.Web
             services.AddHttpContextAccessor();
 
             services.AddSingleton<WeatherForecastService>();
+            services.AddTransient<EventController, EventControllers>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,9 +8,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,6 +21,14 @@
     <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
+    <script>
+        function ShowModal(modalId) {
+            $('#' + modalId).modal('show');
+        }
+        function CloseModal(modalId) {
+            $('#' + modalId).modal('hide');
+        }
+    </script>
     <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
     <app>
         <component type="typeof(App)" render-mode="ServerPrerendered" />
@@ -37,6 +46,7 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+
 </body>
 </html>
 
