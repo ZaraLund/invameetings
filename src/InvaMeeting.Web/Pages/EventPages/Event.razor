@@ -1,0 +1,79 @@
+
+@page "/event"
+@using InvaMeetings.Web
+@using System.Threading.Tasks;
+@inject IJSRuntime jsRuntime
+@inject EventController eventService
+
+@attribute [Authorize]
+<h1>Event List</h1>
+
+<p>This component demonstrates fetching data from Database.</p>
+
+
+
+
+
+
+@if (eventList == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name:</th>
+                <th>Address:</th>
+                <th>Date:</th>
+                <th>Description:</th>
+                <th>Join:</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var eventItem in eventList)
+            {
+                <tr>
+                    <td>@eventItem.name</td>
+                    <td>@eventItem.address</td>
+                    <td>@eventItem.date</td>
+                    <td>@eventItem.description</td>
+                    <td><input type="button" class="btn btn-primary" @onclick="@join" value="Join" /></td>
+                    <a style="height:30px; width:30px;color:black;" href="test">Test</a>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h7>This is part of the access token @(AccessToken != null ? AccessToken : "(null)")</h7>
+    <p>This is part of the access token @(AccessToken != null ? AccessToken : "(null)")</p>
+}
+<div>
+</div>
+
+
+@code {
+
+    [CascadingParameter(Name = "AccessToken")] public string AccessToken { get; set; }
+
+    List<EventModel> eventList;
+
+    EventModel eventObject = new EventModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        eventList = await eventService.Get();
+    }
+
+    public async Task join()
+    {
+        string accessToken = AccessToken;
+
+        Console.WriteLine(accessToken);
+    }
+
+
+}

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvaMeetings.Web.Data;
 using InvaMeetings.Web;
+using System;
 
 namespace InvaMeetings.Web
 {
     public interface EventController
     {
         Task<List<EventModel>> Get();
-        Task<EventModel> Get(int id);
+        Task<EventModel> Get(Guid id);
         Task<EventModel> Add(EventModel eventModel);
         Task<EventModel> Update(EventModel eventModel);
-        Task<EventModel> Delete(int id);
+        Task<EventModel> Delete(Guid id);
     }
     public class EventControllers : EventController
 
@@ -28,7 +29,7 @@ namespace InvaMeetings.Web
             return await _context.eventList.ToListAsync();
         }
 
-        public async Task<EventModel> Get(int id)
+        public async Task<EventModel> Get(Guid id)
         {
             var eventModel = await _context.eventList.FindAsync(id);
             return eventModel;
@@ -48,7 +49,7 @@ namespace InvaMeetings.Web
             return eventModel;
         }
 
-        public async Task<EventModel> Delete(int id)
+        public async Task<EventModel> Delete(Guid id)
         {
             var eventModel = await _context.eventList.FindAsync(id);
             _context.eventList.Remove(eventModel);

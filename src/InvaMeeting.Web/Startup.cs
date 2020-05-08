@@ -1,21 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using InvaMeetings.Web.Data;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using InvaMeetings.Web.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Blazored.Modal;
+using InvaMeetings.Web.Pages;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace InvaMeetings.Web
 {
@@ -31,14 +28,15 @@ namespace InvaMeetings.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
+
         {
-            //New db code
+            services.AddMvc();
             services.AddBlazoredModal();
             services.AddDbContext<DatabaseContext>(
             option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-          
-        
+
+
             //Ends here
 
             services.AddRazorPages();
@@ -54,38 +52,43 @@ namespace InvaMeetings.Web
             // Add authentication services
             services.AddAuthentication(options =>
             {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            
             })
             .AddCookie()
+
+
             .AddOpenIdConnect("Auth0", options =>
             {
-      // Set the authority to your Auth0 domain
-      options.Authority = $"https://{Configuration["Auth0:Domain"]}";
 
-      // Configure the Auth0 Client ID and Client Secret
-      options.ClientId = Configuration["Auth0:ClientId"];
+                // Set the authority to your Auth0 domain
+                options.Authority = $"https://{Configuration["Auth0:Domain"]}";
+
+                // Configure the Auth0 Client ID and Client Secret
+                options.ClientId = Configuration["Auth0:ClientId"];
                 options.ClientSecret = Configuration["Auth0:ClientSecret"];
 
-      // Set response type to code
-      options.ResponseType = "code";
+                // Set response type to code
+                options.ResponseType = "code";
 
-      // Configure the scope
-      options.Scope.Clear();
+                // Configure the scope
+                options.Scope.Clear();
                 options.Scope.Add("openid");
 
-      // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
-      // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-      options.CallbackPath = new PathString("/callback");
+                // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
+                // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
+                options.CallbackPath = new PathString("/callback");
 
-      // Configure the Claims Issuer to be Auth0
-      options.ClaimsIssuer = "Auth0";
-
+                // Configure the Claims Issuer to be Auth0
+                options.ClaimsIssuer = "Auth0";
+                options.SaveTokens = true;
                 options.Events = new OpenIdConnectEvents
                 {
-          // handle the logout redirection
-          OnRedirectToIdentityProviderForSignOut = (context) =>
+                    // handle the logout redirection
+                    OnRedirectToIdentityProviderForSignOut = (context) =>
                     {
                         var logoutUri = $"https://{Configuration["Auth0:Domain"]}/v2/logout?client_id={Configuration["Auth0:ClientId"]}";
 
@@ -94,8 +97,8 @@ namespace InvaMeetings.Web
                         {
                             if (postLogoutUri.StartsWith("/"))
                             {
-                      // transform to absolute
-                      var request = context.Request;
+                                // transform to absolute
+                                var request = context.Request;
                                 postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
                             }
                             logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
@@ -108,9 +111,10 @@ namespace InvaMeetings.Web
                     }
                 };
             });
-
+      
+    
             services.AddHttpContextAccessor();
-
+            services.AddControllersWithViews();
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<EventController, EventControllers>();
 
@@ -141,7 +145,7 @@ namespace InvaMeetings.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
+                                        endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

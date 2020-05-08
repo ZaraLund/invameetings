@@ -1,6 +1,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
+using InvaMeetings.Web;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using System;
+using System.Security.Claims;
 
 namespace InvaMeetings.Web.Pages
 {
@@ -12,6 +18,9 @@ namespace InvaMeetings.Web.Pages
             {
                 RedirectUri = redirectUri
             });
+
         }
     }
+
+
 }
