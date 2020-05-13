@@ -11,8 +11,6 @@ namespace InvaMeetings.Web.Pages
     {
         public async Task OnGet()
         {
-            Console.WriteLine($"UserId: {this.User.FindFirst(ClaimTypes.NameIdentifier).Value}");
-
             await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties { RedirectUri = "/" });
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }

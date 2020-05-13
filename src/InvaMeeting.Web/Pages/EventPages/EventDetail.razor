@@ -3,7 +3,6 @@
 @inject EventController eventService
 @inject IJSRuntime jsRuntime
 
-
 <div class="modal" tabindex="-1" role="dialog" id="eventPopup">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -44,13 +43,10 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </EditForm>
-
-
             </div>
         </div>
     </div>
 </div>
-
 @code {
     [Parameter]
     public EventModel EventObject { get; set; }
@@ -80,6 +76,4 @@
         await CloseEventModal();
         DataChanged?.Invoke();
     }
-
-
 }

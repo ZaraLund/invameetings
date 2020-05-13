@@ -2,6 +2,7 @@
 @page "/eventpage"
 @using InvaMeetings.Web
 @using InvaMeetings.Web.Data
+@using InvaMeetings.Web.Model
 @inject IJSRuntime jsRuntime
 @inject EventController eventService
 
@@ -42,7 +43,9 @@ else
                     <td>@eventItem.address</td>
                     <td>@eventItem.date</td>
                     <td>@eventItem.description</td>
+
                     <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(eventItem))" data-toggle="modal" data-target="#eventPopup" value="Edit" /></td>
+                    
                     <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(eventItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
                 </tr>
@@ -50,8 +53,8 @@ else
         </tbody>
     </table>
 }
-<div>
-</div>
+
+
 
 
 <ConfirmDialog OnClick="@Delete" />
@@ -67,6 +70,8 @@ else
 
 @code {
     List<EventModel> eventList;
+  
+
     EventModel eventObject = new EventModel();
     string customHeader = string.Empty;
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using InvaMeetings.Web.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace InvaMeetings.Web.Data
         {
         }
         public DbSet<EventModel> eventList { get; set; }
+        public DbSet<UserModel> userList { get; set; }
 
         public override int SaveChanges()
         {

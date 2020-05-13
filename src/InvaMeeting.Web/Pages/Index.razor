@@ -1,8 +1,27 @@
 ﻿@page "/"
-@attribute [Authorize]
+@using System;
+@using InvaMeetings.Web.Controllers
+@using InvaMeetings.Web.Model
+@inject UserService userService
+
+<AuthorizeView>
+    <Authorized>
+        @{
+            var applicationUserId = context.User.AsApplicationUser().Id;
+        }
+    </Authorized>
+</AuthorizeView>
 
 
 
 @code{
-   
+    List<UserModel> userList;
+
+    [Parameter]
+    public UserModel UserObject { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+    //    userList = await userService.Get();
+    }
 }

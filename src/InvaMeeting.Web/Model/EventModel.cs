@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using InvaMeetings.Web.Model;
 
 namespace InvaMeetings.Web
 {
@@ -28,5 +27,7 @@ namespace InvaMeetings.Web
         public EventModel() {
             date = DateTime.Now;
         }
+
+        public ICollection<UserModel> userModels { get; set; }
     }
 }

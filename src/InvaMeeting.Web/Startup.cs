@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Blazored.Modal;
 using InvaMeetings.Web.Pages;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using InvaMeetings.Web.Controllers;
 
 namespace InvaMeetings.Web
 {
@@ -59,8 +62,6 @@ namespace InvaMeetings.Web
             
             })
             .AddCookie()
-
-
             .AddOpenIdConnect("Auth0", options =>
             {
 
@@ -77,6 +78,8 @@ namespace InvaMeetings.Web
                 // Configure the scope
                 options.Scope.Clear();
                 options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("email");
 
                 // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
                 // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
@@ -111,12 +114,14 @@ namespace InvaMeetings.Web
                     }
                 };
             });
-      
-    
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<EventController, EventControllers>();
+            services.AddTransient<UserService, UserServices>();
 
         }
 
@@ -145,7 +150,7 @@ namespace InvaMeetings.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
-                                        endpoints.MapFallbackToPage("/_Host");
+                    endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

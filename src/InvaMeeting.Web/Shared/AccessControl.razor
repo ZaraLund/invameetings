@@ -1,5 +1,10 @@
 <AuthorizeView>
-    <Authorized>        
+    <Authorized>
+        @{ 
+            var applicationUserName = context.User.AsApplicationUser().Name;
+            Console.WriteLine("");
+        }
+        <h3>Welcome, @applicationUserName</h3>
         <a href="logout">Log out</a>
     </Authorized>
     <NotAuthorized>

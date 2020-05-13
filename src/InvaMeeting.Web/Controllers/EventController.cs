@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvaMeetings.Web.Data;
-using InvaMeetings.Web;
 using System;
 
 namespace InvaMeetings.Web
