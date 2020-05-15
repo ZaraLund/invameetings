@@ -16,7 +16,7 @@ namespace InvaMeetings.Web.Shared
 
             return new UserModel
             {
-                Id = id,
+                UserId = id,
                 Email = email,
                 Name = name,
                 GivenName = givenName,

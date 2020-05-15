@@ -15,7 +15,6 @@ namespace InvaMeetings.Web
         Task<EventModel> Delete(Guid id);
     }
     public class EventControllers : EventController
-
     {
         private readonly DatabaseContext _context;
 
@@ -33,7 +32,7 @@ namespace InvaMeetings.Web
             var eventModel = await _context.eventList.FindAsync(id);
             return eventModel;
         }
-
+        
         public async Task<EventModel> Add(EventModel eventModel)
         {
             _context.eventList.Add(eventModel);

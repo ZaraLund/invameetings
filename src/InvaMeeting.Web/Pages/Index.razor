@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using System;
 @using InvaMeetings.Web.Controllers
 @using InvaMeetings.Web.Model
 @inject UserService userService
@@ -7,21 +6,43 @@
 <AuthorizeView>
     <Authorized>
         @{
-            var applicationUserId = context.User.AsApplicationUser().Id;
+            var applicationUserId = context.User.AsApplicationUser().UserId;
+            var applicationUserName = context.User.AsApplicationUser().Name;
+            var applicationUserFamilyName = context.User.AsApplicationUser().FamilyName;
+            var applicationUserGivenName = context.User.AsApplicationUser().GivenName;
+            var applicationUserEmail = context.User.AsApplicationUser().Email;
+
+            UserModel userObject = new UserModel();
+
+            userObject.UserId = applicationUserId;
+            userObject.Name = applicationUserName;
+            userObject.GivenName = applicationUserGivenName;
+            userObject.FamilyName = applicationUserFamilyName;
+            userObject.Email = applicationUserEmail;
+            userObject.LastLoginDate = DateTime.Now;
+
+            addUserToDatabase(userObject);
         }
+
     </Authorized>
 </AuthorizeView>
-
-
 
 @code{
     List<UserModel> userList;
 
-    [Parameter]
-    public UserModel UserObject { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    public async Task addUserToDatabase(UserModel user)
     {
-    //    userList = await userService.Get();
+        if (await userService.Get(user.UserId) == null)
+        {
+            Console.WriteLine("Registering new user..." + user.UserId);
+            await userService.Add(user);
+        }
+        else
+        {
+            Console.WriteLine("Updating user last login date...");
+            await userService.Update(user);
+        }
     }
+
 }

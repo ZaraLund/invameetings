@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using InvaMeetings.Web.Model;
 
 namespace InvaMeetings.Web.Model
 {
@@ -8,8 +10,8 @@ namespace InvaMeetings.Web.Model
     public class UserModel
     {
         [Key]
-        public string Id { get; set; }
-        [ForeignKey("Id")]
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
         public string Email { get; set; }
         public string GivenName { get; set; }
         public string FamilyName { get; set; }

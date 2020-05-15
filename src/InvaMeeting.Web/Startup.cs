@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using InvaMeetings.Web.Controllers;
 
+
 namespace InvaMeetings.Web
 {
     public class Startup
@@ -35,12 +36,9 @@ namespace InvaMeetings.Web
         {
             services.AddMvc();
             services.AddBlazoredModal();
-            services.AddDbContext<DatabaseContext>(
-            option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DatabaseContext>(option 
+                => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-
-
-            //Ends here
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -122,6 +120,7 @@ namespace InvaMeetings.Web
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<EventController, EventControllers>();
             services.AddTransient<UserService, UserServices>();
+            services.AddTransient<UserEventService, UserEventServices>();
 
         }
 

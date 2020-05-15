@@ -38,6 +38,7 @@ else
         <tbody>
             @foreach (var eventItem in eventList)
             {
+
                 <tr>
                     <td>@eventItem.name</td>
                     <td>@eventItem.address</td>
@@ -45,7 +46,7 @@ else
                     <td>@eventItem.description</td>
 
                     <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(eventItem))" data-toggle="modal" data-target="#eventPopup" value="Edit" /></td>
-                    
+
                     <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(eventItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
                 </tr>
@@ -70,7 +71,6 @@ else
 
 @code {
     List<EventModel> eventList;
-  
 
     EventModel eventObject = new EventModel();
     string customHeader = string.Empty;
@@ -84,7 +84,7 @@ else
     {
         eventObject = new EventModel();
         eventObject.date = DateTime.Now;
-        customHeader = "Add New Task";
+        customHeader = "Add New Event";
     }
 
     private async void DataChanged()
@@ -95,7 +95,7 @@ else
 
     private void PrepareForEdit(EventModel task)
     {
-        customHeader = "Edit Task";
+        customHeader = "Edit Event";
         eventObject = task;
     }
 
@@ -106,7 +106,7 @@ else
 
     private async Task Delete()
     {
-        var task = await eventService.Delete(eventObject.ID);
+        var task = await eventService.Delete(eventObject.EventId);
 
         await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
         eventList = await eventService.Get();

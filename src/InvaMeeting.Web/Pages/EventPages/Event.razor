@@ -1,19 +1,16 @@
 
 @page "/event"
+@using System.Security.Cryptography.X509Certificates
+@using InvaMeetings.Web.Controllers
+@using InvaMeetings.Web.Model
 @inject IJSRuntime jsRuntime
+@inject UserEventService userEventService
 @inject EventController eventService
 
 @attribute [Authorize]
 <h1>Event List</h1>
 
-<AuthorizeView>
-    <Authorized>
-        @{ 
-            var applicationUserId = context.User.AsApplicationUser().Id;
-            Console.WriteLine("");
-        }
-    </Authorized>
-</AuthorizeView>
+
 <p>This component demonstrates data from Database.</p>
 
 @if (eventList == null)
@@ -41,7 +38,7 @@ else
                 <td>@eventItem.address</td>
                 <td>@eventItem.date</td>
                 <td>@eventItem.description</td>
-                <td><input type="button" class="btn btn-primary" value="Join" /></td>
+                <td><input type="button" class="btn btn-primary" @onclick="(() => addUserToEvent(eventItem))"  value="Join" /></td>        
             </tr>
         }
         </tbody>
@@ -50,10 +47,38 @@ else
 <div>
 </div>
 
-@code {
-    
-    List<EventModel> eventList;
+<AuthorizeView>
+    <Authorized>
+        @{
+            var applicationUserId = context.User.AsApplicationUser().UserId;
+            userEventObject.UserId = applicationUserId;
+        }
+        }
+        
+        @code {
+            List<EventModel> eventList;
+            EventModel eventObject = new EventModel();
+            UserEventModel userEventObject = new UserEventModel();
+            UserEventModel userEventModel = new UserEventModel();
+            //Lägg till så sidan uppdateras 
+            private async Task addUserToEvent(EventModel task)
+            {
+                
+                userEventObject.ApplicationTime = DateTime.Now;
+                eventList = await eventService.Get();
+                eventObject = task;
+                userEventObject.EventId = eventObject.EventId;
+                userEventService.Add(userEventObject);
 
+
+                Console.WriteLine("Detta är vad som skriv ut " + eventObject.EventId + userEventObject.UserId);
+            }
+
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
     protected override async Task OnInitializedAsync()
     {
         eventList = await eventService.Get();

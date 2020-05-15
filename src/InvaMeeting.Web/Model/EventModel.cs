@@ -10,9 +10,8 @@ namespace InvaMeetings.Web
     public class EventModel
     {
         [Key]
-        public Guid ID{ get; set; }
-        [ForeignKey("ID")]
-
+        public Guid EventId{ get; set; }
+        [ForeignKey("EventId")]
 
         [Required(ErrorMessage = "Event name is required")]
         [StringLength(15, ErrorMessage = "Name is too long.")]
@@ -28,6 +27,5 @@ namespace InvaMeetings.Web
             date = DateTime.Now;
         }
 
-        public ICollection<UserModel> userModels { get; set; }
     }
 }

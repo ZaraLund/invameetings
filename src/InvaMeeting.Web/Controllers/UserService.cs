@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvaMeetings.Web.Data;
 using System;
+using System.Threading;
 using InvaMeetings.Web.Model;
 
 namespace InvaMeetings.Web.Controllers
@@ -10,13 +11,13 @@ namespace InvaMeetings.Web.Controllers
     public interface UserService
     {
         Task<List<UserModel>> Get();
-        Task<UserModel> Get(Guid id);
+        Task<UserModel> Get(string id);
+        Task<UserModel> Update(UserModel userModel);
         Task<UserModel> Add(UserModel userModel);
     }
     
     
     public class UserServices : UserService
-
     {
         private readonly DatabaseContext _context;
 
@@ -28,12 +29,23 @@ namespace InvaMeetings.Web.Controllers
         {
             return await _context.userList.ToListAsync();
         }
-
-        public async Task<UserModel> Get(Guid id)
+   
+        public async Task<UserModel> Get(string id)
         {
-            var userModel = await _context.userList.FindAsync(id);
-            return userModel;
+            Console.WriteLine("Trying to fetch userModel with id " + id);
+
+            try
+            {
+                var userModel = await _context.userList.FindAsync(id);
+                return userModel;
+            }
+            catch (TaskCanceledException e)
+            {
+                Console.WriteLine("Fetch failed");
+                return null;
+            }
         }
+
 
         public async Task<UserModel> Add(UserModel userModel)
         {
@@ -42,16 +54,11 @@ namespace InvaMeetings.Web.Controllers
             return userModel;
         }
 
-
-        Task<List<UserModel>> UserService.Get()
+        public async Task<UserModel> Update(UserModel userModel)
         {
-            throw new NotImplementedException();
+            _context.Entry(userModel).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return userModel;
         }
-
-        Task<UserModel> UserService.Get(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

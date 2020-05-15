@@ -17,7 +17,7 @@
                     <DataAnnotationsValidator />
                     <div class="form-group">
                         <label for="taskName">Event Name</label>
-                        <input type="hidden" @bind-value="@EventObject.ID" />
+                        <input type="hidden" @bind-value="@EventObject.EventId" />
                         <InputText id="name" class="form-control" @bind-Value="@EventObject.name" />
                         <ValidationMessage For="@(() => EventObject.name)" />
 
@@ -65,7 +65,7 @@
 
     private async void HandleValidSubmit()
     {
-        if (EventObject.ID == Guid.Empty)
+        if (EventObject.EventId == Guid.Empty)
         {
             await eventService.Add(EventObject);
         }
