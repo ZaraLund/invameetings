@@ -10,7 +10,6 @@
 @attribute [Authorize]
 <h1>Event List</h1>
 
-
 <p>This component demonstrates data from Database.</p>
 
 @if (eventList == null)
@@ -20,29 +19,39 @@
 
 else
 {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name:</th>
-            <th>Address:</th>
-            <th>Date:</th>
-            <th>Description:</th>
-            <th>Join:</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var eventItem in eventList)
-        {
+    <div class="container mt-3">
+        <div class="md-form mt-0" style="width: 25%; margin-bottom: 2%">
+            <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+        </div>
+
+
+        <table class="table table-striped" id="myTable">
+            <thead>
             <tr>
-                <td>@eventItem.name</td>
-                <td>@eventItem.address</td>
-                <td>@eventItem.date</td>
-                <td>@eventItem.description</td>
-                <td><input type="button" class="btn btn-primary" @onclick="(() => addUserToEvent(eventItem))"  value="Join" /></td>        
+                <th>Name:</th>
+                <th>Address:</th>
+                <th>Date:</th>
+                <th>Description:</th>
+                <th>Join:</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="myTable">
+
+            @foreach (var eventItem in eventList)
+            {
+                <tr>
+                    <td>@eventItem.name</td>
+                    <td>@eventItem.address</td>
+                    <td>@eventItem.date</td>
+                    <td>@eventItem.description</td>
+                    <td><input type="button" class="btn btn-primary" @onclick="@(() => addUserToEvent(eventItem))" value="Join"/></td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 }
 <div>
 </div>
@@ -53,34 +62,36 @@ else
             var applicationUserId = context.User.AsApplicationUser().UserId;
             userEventObject.UserId = applicationUserId;
         }
-        }
-        
+
         @code {
+            protected override async Task OnInitializedAsync()
+            {
+                eventList = await eventService.Get();
+            }
+
+
+
+            [Parameter]
+            public Action DataChanged { get; set; }
+
             List<EventModel> eventList;
             EventModel eventObject = new EventModel();
             UserEventModel userEventObject = new UserEventModel();
-            UserEventModel userEventModel = new UserEventModel();
-            //Lägg till så sidan uppdateras 
             private async Task addUserToEvent(EventModel task)
             {
-                
+
                 userEventObject.ApplicationTime = DateTime.Now;
-                eventList = await eventService.Get();
                 eventObject = task;
                 userEventObject.EventId = eventObject.EventId;
-                userEventService.Add(userEventObject);
+                await userEventService.Add(userEventObject);
+                Console.WriteLine("Detta ï¿½r vad som skriv ut " + eventObject.EventId + userEventObject.UserId);
+                DataChanged?.Invoke();
+                
 
-
-                Console.WriteLine("Detta är vad som skriv ut " + eventObject.EventId + userEventObject.UserId);
             }
+
 
         }
     </Authorized>
 </AuthorizeView>
 
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        eventList = await eventService.Get();
-    }
-}

@@ -11,11 +11,16 @@
 
 <p>This component demonstrates fetching data from Database.</p>
 <div class="form-group">
-    <input type="button" data-toggle="modal" data-target="#eventPopup" class="btn btn-success" value="Add Event" @onclick="(() => InitializeEventObject())" />
+    <input type="button" data-toggle="modal" data-target="#eventPopup" class="btn btn-success" style="margin-bottom: 2%" value="Add Event" @onclick="(() => InitializeEventObject())" />
 
     <EventDetail EventObject=eventObject DataChanged="@DataChanged">
 
     </EventDetail>
+    
+    <div class="md-form mt-0" style="width: 25%; margin-bottom: 2%; margin-top: 2%">
+        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+    </div>
 </div>
 
 @if (eventList == null)
@@ -24,35 +29,35 @@
 }
 else
 {
-    <table class="table">
-        <thead>
+<table class="table table-striped" id="myTable">
+    <thead>
+        <tr>
+            <th>Name:</th>
+            <th>Address:</th>
+            <th>Date:</th>
+            <th>Description:</th>
+            <th>Edit:</th>
+            <th>Delete:</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var eventItem in eventList)
+        {
+
             <tr>
-                <th>Name:</th>
-                <th>Address:</th>
-                <th>Date:</th>
-                <th>Description:</th>
-                <th>Edit:</th>
-                <th>Delete:</th>
+                <td>@eventItem.name</td>
+                <td>@eventItem.address</td>
+                <td>@eventItem.date</td>
+                <td>@eventItem.description</td>
+
+                <td><input type="button" class="btn btn-primary" @onclick="@(() => PrepareForEdit(eventItem))" data-toggle="modal" data-target="#eventPopup" value="Edit" /></td>
+
+                <td><input type="button" class="btn btn-danger" @onclick="@(() => PrepareForDelete(eventItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var eventItem in eventList)
-            {
-
-                <tr>
-                    <td>@eventItem.name</td>
-                    <td>@eventItem.address</td>
-                    <td>@eventItem.date</td>
-                    <td>@eventItem.description</td>
-
-                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(eventItem))" data-toggle="modal" data-target="#eventPopup" value="Edit" /></td>
-
-                    <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(eventItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
-
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
 }
 
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvaMeetings.Web.Data;
 using System;
-using System.Threading;
 using InvaMeetings.Web.Model;
 
 namespace InvaMeetings.Web.Controllers
