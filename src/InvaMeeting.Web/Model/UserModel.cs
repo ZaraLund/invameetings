@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using InvaMeetings.Web.Model;
-
+using System.Linq;
 namespace InvaMeetings.Web.Model
 {
     [Table("User")]

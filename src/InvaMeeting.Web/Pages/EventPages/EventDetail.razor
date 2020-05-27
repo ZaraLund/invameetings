@@ -2,8 +2,7 @@
 @inject EventController eventService
 @inject IJSRuntime jsRuntime
 
-
-<div class="modal" tabindex="-1" role="dialog" id="eventPopup">
+<div class="modal fade" tabindex="-1" role="dialog" id="eventPopup">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -47,6 +46,7 @@
         </div>
     </div>
 </div>
+
 @code {
     [Parameter]
     public EventModel EventObject { get; set; }
@@ -57,24 +57,18 @@
     [Parameter]
     public RenderFragment CustomHeader { get; set; }
 
-
-    private async Task CloseEventModal()
-    {
+    private async Task CloseEventModal() {
         await jsRuntime.InvokeAsync<object>("CloseModal", "eventPopup");
     }
 
-    private async void HandleValidSubmit()
-    {
-        if (EventObject.EventId == Guid.Empty)
-        {
+    private async void HandleValidSubmit() {
+        if (EventObject.EventId == Guid.Empty) {
             await eventService.Add(EventObject);
-        }
-        else
-        {
+        } else {
             await eventService.Update(EventObject);
         }
+
         await CloseEventModal();
         DataChanged?.Invoke();
-        
     }
 }

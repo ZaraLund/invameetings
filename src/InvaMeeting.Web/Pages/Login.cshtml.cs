@@ -12,7 +12,7 @@ namespace InvaMeetings.Web.Pages
 {
     public class LoginModel : PageModel
     {
-        public async Task OnGetAsync (string redirectUri)
+        public async Task OnGetAsync(string redirectUri)
         {
             await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties
             {

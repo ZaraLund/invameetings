@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvaMeetings.Web.Data;
 using System;
+using System.Linq;
+using InvaMeetings.Web.Model;
+using Microsoft.Extensions.Logging;
 
 namespace InvaMeetings.Web
 {
@@ -32,7 +35,7 @@ namespace InvaMeetings.Web
             var eventModel = await _context.eventList.FindAsync(id);
             return eventModel;
         }
-        
+
         public async Task<EventModel> Add(EventModel eventModel)
         {
             _context.eventList.Add(eventModel);
@@ -54,5 +57,8 @@ namespace InvaMeetings.Web
             await _context.SaveChangesAsync();
             return eventModel;
         }
+
+
+
     }
 }

@@ -1,6 +1,6 @@
 
 @page "/event"
-@using System.Security.Cryptography.X509Certificates
+
 @using InvaMeetings.Web.Controllers
 @using InvaMeetings.Web.Model
 @inject IJSRuntime jsRuntime
@@ -9,8 +9,6 @@
 
 @attribute [Authorize]
 <h1>Event List</h1>
-
-<p>This component demonstrates data from Database.</p>
 
 @if (eventList == null)
 {
@@ -21,40 +19,43 @@ else
 {
     <div class="container mt-3">
         <div class="md-form mt-0" style="width: 25%; margin-bottom: 2%">
-            <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-
+            <input class="form-control" 
+                   type="text"
+                   id="myInput"
+                   onkeyup="myFunction()" placeholder="Search for event.." title="Type in a name">
         </div>
-
-
-        <table class="table table-striped" id="myTable">
-            <thead>
-            <tr>
-                <th>Name:</th>
-                <th>Address:</th>
-                <th>Date:</th>
-                <th>Description:</th>
-                <th>Join:</th>
-            </tr>
-            </thead>
-            <tbody id="myTable">
-
-            @foreach (var eventItem in eventList)
-            {
-                <tr>
-                    <td>@eventItem.name</td>
-                    <td>@eventItem.address</td>
-                    <td>@eventItem.date</td>
-                    <td>@eventItem.description</td>
-                    <td><input type="button" class="btn btn-primary" @onclick="@(() => addUserToEvent(eventItem))" value="Join"/></td>
-
-                </tr>
-            }
-            </tbody>
-        </table>
+            
+        <div class="table-responsive-sm">
+            <table class="table table-striped" id="myTable">
+                <thead>
+                    <tr>
+                        <th>Name:</th>
+                        <th>Address:</th>
+                        <th>Date:</th>
+                        <th>Description:</th>
+                        <th>Join:</th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    @foreach (var eventItem in eventList)
+                    {
+                        <tr>
+                            <td>@eventItem.name</td>
+                            <td>@eventItem.address</td>
+                            <td>@eventItem.date</td>
+                            <td>@eventItem.description</td>
+                            <td>
+                                <input type="button"
+                                       class="btn btn-primary" @onclick="@(() => addUserToEvent(eventItem))"
+                                       value="Join" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 }
-<div>
-</div>
 
 <AuthorizeView>
     <Authorized>
@@ -64,34 +65,24 @@ else
         }
 
         @code {
-            protected override async Task OnInitializedAsync()
-            {
-                eventList = await eventService.Get();
-            }
-
-
-
             [Parameter]
             public Action DataChanged { get; set; }
 
             List<EventModel> eventList;
             EventModel eventObject = new EventModel();
             UserEventModel userEventObject = new UserEventModel();
-            private async Task addUserToEvent(EventModel task)
-            {
 
+            protected override async Task OnInitializedAsync() {
+                eventList = await eventService.Get();
+            }
+
+            private async Task addUserToEvent(EventModel task) {
                 userEventObject.ApplicationTime = DateTime.Now;
                 eventObject = task;
                 userEventObject.EventId = eventObject.EventId;
                 await userEventService.Add(userEventObject);
-                Console.WriteLine("Detta �r vad som skriv ut " + eventObject.EventId + userEventObject.UserId);
                 DataChanged?.Invoke();
-                
-
             }
-
-
         }
     </Authorized>
 </AuthorizeView>
-

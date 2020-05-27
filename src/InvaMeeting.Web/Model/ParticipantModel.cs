@@ -4,14 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvaMeetings.Web.Model
 {
-    [Table("Event_User")]
-    public class UserEventModel
+    public class ParticipantModel
     {
         [Key]
-        public string UserId { get; set; }
-        [ForeignKey("[UserId]")]
+        [ForeignKey("[EventId]")]
         public Guid EventId { get; set; }
-        public DateTime ApplicationTime { get; set; }
 
+        [Required]
+        public string Name { get; set; }
     }
 }

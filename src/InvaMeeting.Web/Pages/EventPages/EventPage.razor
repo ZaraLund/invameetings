@@ -1,99 +1,118 @@
 
 @page "/eventpage"
 @using InvaMeetings.Web
-@using InvaMeetings.Web.Data
+@using InvaMeetings.Web.Controllers
 @using InvaMeetings.Web.Model
 @inject IJSRuntime jsRuntime
 @inject EventController eventService
-
+@inject ParticipantService participantService
 @attribute [Authorize]
+
 <h1>Event List</h1>
-
-<p>This component demonstrates fetching data from Database.</p>
 <div class="form-group">
-    <input type="button" data-toggle="modal" data-target="#eventPopup" class="btn btn-success" style="margin-bottom: 2%" value="Add Event" @onclick="(() => InitializeEventObject())" />
+    <input type="button"
+           data-toggle="modal"
+           data-target="#eventPopup"
+           class="btn btn-success"
+           style="margin-bottom: 2%"
+           value="Add Event" @onclick="(() => InitializeEventObject())" />
 
-    <EventDetail EventObject=eventObject DataChanged="@DataChanged">
+    <EventDetail EventObject=eventObject DataChanged="@DataChanged"></EventDetail>
 
-    </EventDetail>
-    
     <div class="md-form mt-0" style="width: 25%; margin-bottom: 2%; margin-top: 2%">
-        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for event.." title="Type in a name">
 
     </div>
 </div>
 
-@if (eventList == null)
-{
+@if (eventList == null) {
     <p><em>Loading...</em></p>
-}
-else
-{
-<table class="table table-striped" id="myTable">
-    <thead>
-        <tr>
-            <th>Name:</th>
-            <th>Address:</th>
-            <th>Date:</th>
-            <th>Description:</th>
-            <th>Edit:</th>
-            <th>Delete:</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var eventItem in eventList)
-        {
+} else {
+    <div class="table-responsive-sm">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th>Name:</th>
+                    <th>Address:</th>
+                    <th>Date:</th>
+                    <th>Description:</th>
+                    <th>Edit:</th>
+                    <th>Delete:</th>
+                    <th>Participant:</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var eventItem in eventList) {
+                    <tr>
+                        <td>@eventItem.name</td>
+                        <td>@eventItem.address</td>
+                        <td>@eventItem.date</td>
+                        <td>@eventItem.description</td>
+                        <td><input type="button" class="btn btn-primary" @onclick="@(() => PrepareForEdit(eventItem))" data-toggle="modal" data-target="#eventPopup" value="Edit" /></td>
 
-            <tr>
-                <td>@eventItem.name</td>
-                <td>@eventItem.address</td>
-                <td>@eventItem.date</td>
-                <td>@eventItem.description</td>
+                        <td><input type="button" class="btn btn-danger" @onclick="@(() => PrepareForDelete(eventItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
-                <td><input type="button" class="btn btn-primary" @onclick="@(() => PrepareForEdit(eventItem))" data-toggle="modal" data-target="#eventPopup" value="Edit" /></td>
+                        <td><input type="button" class="btn btn-info" @onclick="@(async () => await PrepareForView(eventItem))" data-toggle="modal" data-target="#myModal" value="Participants" /></td>
 
-                <td><input type="button" class="btn btn-danger" @onclick="@(() => PrepareForDelete(eventItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
-            </tr>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+        <!-- The Modal -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Participants:</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <ParticipantModal participantList=participantList />
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         }
-    </tbody>
-</table>
-}
+
+
+        <ConfirmDialog OnClick="@Delete" />
+
+        <EventDetail EventObject=eventObject DataChanged="@DataChanged">
+            <CustomHeader>@customHeader</CustomHeader>
+        </EventDetail>
 
 
 
+        @code {
+            List<ParticipantModel> participantList;
+            List<EventModel> eventList;
 
-<ConfirmDialog OnClick="@Delete" />
+            EventModel eventObject = new EventModel();
+            string customHeader = string.Empty;
 
-<EventDetail EventObject=eventObject DataChanged="@DataChanged">
-    <CustomHeader>@customHeader</CustomHeader>
-</EventDetail>
-
-
-
-
-
-
-@code {
-    List<EventModel> eventList;
-
-    EventModel eventObject = new EventModel();
-    string customHeader = string.Empty;
-
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         eventList = await eventService.Get();
     }
 
-    private void InitializeEventObject()
-    {
+    private void InitializeEventObject() {
         eventObject = new EventModel();
         eventObject.date = DateTime.Now;
         customHeader = "Add New Event";
     }
 
-    private async void DataChanged()
-    {
+    private async void DataChanged() {
         eventList = await eventService.Get();
         StateHasChanged();
     }
@@ -117,4 +136,13 @@ else
         eventList = await eventService.Get();
         eventObject = new EventModel();
     }
-}
+
+    private async Task PrepareForView(EventModel task)
+    {
+        eventObject = task;
+
+        participantList = await participantService.GetParticipantBy(eventObject.EventId);
+    }
+
+
+    }

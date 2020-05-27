@@ -1,0 +1,38 @@
+@using InvaMeetings.Web.Model
+
+@attribute [Authorize]
+
+
+
+@if (participantList == null) {
+    <p><em>Loading...</em></p>
+}
+
+else {
+<div class="container mt-3">
+    <table class="table table-striped" id="newTable">
+        <thead>
+        <tr>
+            <th>Name:</th>
+        </tr>
+        </thead>
+        <tbody id="myTable">
+
+            @foreach (ParticipantModel participantItem in participantList)
+            {
+                
+            <tr>
+                
+                <td>@participantItem.Name</td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
+      
+@code {
+    [Parameter]
+    public List<ParticipantModel> participantList { get; set; }
+}

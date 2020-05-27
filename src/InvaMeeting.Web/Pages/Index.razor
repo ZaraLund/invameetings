@@ -21,16 +21,13 @@
             userObject.Email = applicationUserEmail;
             userObject.LastLoginDate = DateTime.Now;
 
-             addUserToDatabase(userObject);
+            Task test = addUserToDatabase(userObject);
         }
 
     </Authorized>
 </AuthorizeView>
 
 @code{
-    List<UserModel> userList;
-
-
     public async Task addUserToDatabase(UserModel user)
     {
         if (await userService.Get(user.UserId) == null)

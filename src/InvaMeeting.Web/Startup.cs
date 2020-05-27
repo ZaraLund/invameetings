@@ -11,12 +11,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Blazored.Modal;
-using InvaMeetings.Web.Pages;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using InvaMeetings.Web.Controllers;
-
 
 namespace InvaMeetings.Web
 {
@@ -36,7 +32,7 @@ namespace InvaMeetings.Web
         {
             services.AddMvc();
             services.AddBlazoredModal();
-            services.AddDbContext<DatabaseContext>(option 
+            services.AddDbContext<DatabaseContext>(option
                 => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -57,7 +53,7 @@ namespace InvaMeetings.Web
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            
+
             })
             .AddCookie()
             .AddOpenIdConnect("Auth0", options =>
@@ -121,7 +117,7 @@ namespace InvaMeetings.Web
             services.AddTransient<EventController, EventControllers>();
             services.AddTransient<UserService, UserServices>();
             services.AddTransient<UserEventService, UserEventServices>();
-
+            services.AddTransient<ParticipantService, ParticipantServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -149,7 +145,7 @@ namespace InvaMeetings.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
-                    endpoints.MapFallbackToPage("/_Host");
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

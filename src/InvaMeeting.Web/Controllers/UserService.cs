@@ -14,8 +14,8 @@ namespace InvaMeetings.Web.Controllers
         Task<UserModel> Update(UserModel userModel);
         Task<UserModel> Add(UserModel userModel);
     }
-    
-    
+
+
     public class UserServices : UserService
     {
         private readonly DatabaseContext _context;
@@ -28,7 +28,7 @@ namespace InvaMeetings.Web.Controllers
         {
             return await _context.userList.ToListAsync();
         }
-   
+
         public async Task<UserModel> Get(string id)
         {
             Console.WriteLine("Trying to fetch userModel with id " + id);
@@ -38,7 +38,7 @@ namespace InvaMeetings.Web.Controllers
                 var userModel = await _context.userList.FindAsync(id);
                 return userModel;
             }
-            catch (TaskCanceledException e)
+            catch (TaskCanceledException)
             {
                 Console.WriteLine("Fetch failed");
                 return null;

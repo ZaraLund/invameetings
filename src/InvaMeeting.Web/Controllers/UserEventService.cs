@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvaMeetings.Web.Data;
-using System;
-using System.Threading;
 using InvaMeetings.Web.Model;
+using System.Linq;
+
+
 
 namespace InvaMeetings.Web.Controllers
 {
@@ -44,5 +46,6 @@ namespace InvaMeetings.Web.Controllers
             await _context.SaveChangesAsync();
             return userEventModel;
         }
+
     }
 }
