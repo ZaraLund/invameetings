@@ -1,13 +1,15 @@
 <AuthorizeView>
     <Authorized>
-        @{ 
+        @{
             var applicationUserName = context.User.AsApplicationUser().Name;
-            Console.WriteLine("");
+
         }
-        <h3>Welcome, @applicationUserName</h3>
-        <a href="logout">Log out</a>
+       
+            <h3>Welcome, @applicationUserName</h3>
     </Authorized>
     <NotAuthorized>
-        <a href="login?redirectUri=/">Log in</a>
+             <a class="link-button" style="font-family: Arial;" href="login?redirectUri=/">  Login  </a>
     </NotAuthorized>
 </AuthorizeView>
+
+
