@@ -19,15 +19,15 @@
 
     <EventDetail EventObject=eventObject DataChanged="@DataChanged"></EventDetail>
 
-    <div class="md-form mt-0" style="width: 25%; margin-bottom: 2%; margin-top: 2%">
+    <div class="md-form mt-0" style="width:200px; margin-bottom: 2%; margin-top: 2%">
         <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for event.." title="Type in a name">
-
     </div>
 </div>
 
 @if (eventList == null) {
     <p><em>Loading...</em></p>
 } else {
+
     <div class="table-responsive-sm">
         <table class="table table-striped" id="myTable">
             <thead>

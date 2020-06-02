@@ -1,12 +1,4 @@
 <AuthorizeView>
-    <Authorized>
-        @{
-            var applicationUserName = context.User.AsApplicationUser().Name;
-
-        }
-       
-            <h3>Welcome, @applicationUserName</h3>
-    </Authorized>
     <NotAuthorized>
              <a class="link-button" style="font-family: Arial;" href="login?redirectUri=/">  Login  </a>
     </NotAuthorized>

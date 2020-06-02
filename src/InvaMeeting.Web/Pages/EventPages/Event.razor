@@ -17,8 +17,9 @@
 
 else
 {
+
     <div class="container mt-3" style="float:left;">
-        <div class="md-form mt-0" style="width: 25%; margin-bottom: 2%">
+        <div class="md-form mt-0" style="width: 200px; margin-bottom: 2%">
             <input class="form-control" 
                    type="text"
                    id="myInput"
@@ -40,6 +41,7 @@ else
                     @foreach (var eventItem in eventList)
                     {
                         <tr>
+
                             <td>@eventItem.name</td>
                             <td>@eventItem.address</td>
                             <td>@eventItem.date</td>
@@ -59,6 +61,9 @@ else
 
 <AuthorizeView>
     <Authorized>
+
+
+
         @{
             var applicationUserId = context.User.AsApplicationUser().UserId;
             userEventObject.UserId = applicationUserId;
@@ -72,16 +77,20 @@ else
             EventModel eventObject = new EventModel();
             UserEventModel userEventObject = new UserEventModel();
 
-            protected override async Task OnInitializedAsync() {
+            protected override async Task OnInitializedAsync()
+            {
                 eventList = await eventService.Get();
             }
 
-            private async Task addUserToEvent(EventModel task) {
+            private async Task addUserToEvent(EventModel task)
+            {
                 userEventObject.ApplicationTime = DateTime.Now;
                 eventObject = task;
                 userEventObject.EventId = eventObject.EventId;
                 await userEventService.Add(userEventObject);
                 DataChanged?.Invoke();
+                eventList = await eventService.Get();
+
             }
         }
     </Authorized>

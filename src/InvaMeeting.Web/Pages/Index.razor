@@ -1,48 +1,62 @@
 ﻿@page "/"
 @using InvaMeetings.Web.Controllers
 @using InvaMeetings.Web.Model
+@using System.Linq;
+@using System.Security.Claims;
 @inject UserService userService
-    <AuthorizeView>
-        <NotAuthorized>
-            <body background="Resources/Images/background.png" style="background-size: cover; background-attachment: fixed; background-repeat: no-repeat ">
-                <div class="text-box">
+<AuthorizeView>
+    <NotAuthorized>
+        <body background="Resources/Images/background.png" style="background-size: cover; background-attachment: fixed; background-repeat: no-repeat ">
+            <div class="text-box">
 
 
-                    <div>
-                        <h1 class="header-text">
-                            InvaMeeting - Book your meetings
-                        </h1>
-                        <p class="info-text">
+                <div>
+                    <h1 class="header-text">
+                        InvaMeeting - Book your meetings
+                    </h1>
+                    <p class="info-text">
 
-                            Lorem ipsum dolor sit amet, omnis omittam vix no. Est eu nullam imperdiet eloquentiam, detraxit voluptaria
-                            te usu. Est persecuti reformidans ut, eu stet tacimates mea. Vix magna philosophia et.
-                            <br />
-                            <br />
-                            Sit cu soleat consulatu, vel ferri ignota adversarium ad. Vocent audiam deleniti sit at, mei mutat simul
-                            integre ad. Ad putant habemus repudiare mea. Utinam menandri cum eu, ei cibo necessitatibus sit. Reque assum
-                            in vix, graeco feugait vel ei. Est ut verear fuisset.
-                            <br />
-                            <br />
-                            Et probatus torquatos ius, ne nominati honestatis usu, verear nostrud lucilius per ea. Et noster latine nec,
-                            at mel qualisque instructior. Malorum dissentias eos no. Ad natum offendit qui, eum facete consetetur ne.
-                            Liber iisque sit eu.
-                            in vix, graeco feugait vel ei. Est ut verear fuisset.
-                            <br />
-                            <br />
-                            Lorem ipsum dolor sit amet, omnis omittam vix no. Est eu nullam imperdiet eloquentiam, detraxit voluptaria
-                            te usu. Est persecuti reformidans ut, eu stet tacimates mea. Vix magna philosophia et.
-                            in vix, graeco feugait vel ei. Est ut verear fuisset.
-                            <br />
-                        </p>
-                    </div>
-                    <img src="Resources/Images/meetingimg.svg" class="meeting-img" alt="...">
+                        Lorem ipsum dolor sit amet, omnis omittam vix no. Est eu nullam imperdiet eloquentiam, detraxit voluptaria
+                        te usu. Est persecuti reformidans ut, eu stet tacimates mea. Vix magna philosophia et.
+                        <br />
+                        <br />
+                        Sit cu soleat consulatu, vel ferri ignota adversarium ad. Vocent audiam deleniti sit at, mei mutat simul
+                        integre ad. Ad putant habemus repudiare mea. Utinam menandri cum eu, ei cibo necessitatibus sit. Reque assum
+                        in vix, graeco feugait vel ei. Est ut verear fuisset.
+                        <br />
+                        <br />
+                        Et probatus torquatos ius, ne nominati honestatis usu, verear nostrud lucilius per ea. Et noster latine nec,
+                        at mel qualisque instructior. Malorum dissentias eos no. Ad natum offendit qui, eum facete consetetur ne.
+                        Liber iisque sit eu.
+                        in vix, graeco feugait vel ei. Est ut verear fuisset.
+                        <br />
+                        <br />
+                        Lorem ipsum dolor sit amet, omnis omittam vix no. Est eu nullam imperdiet eloquentiam, detraxit voluptaria
+                        te usu. Est persecuti reformidans ut, eu stet tacimates mea. Vix magna philosophia et.
+                        in vix, graeco feugait vel ei. Est ut verear fuisset.
+                        <br />
+                    </p>
                 </div>
-            </body>
-        </NotAuthorized>
-    </AuthorizeView>
+                <img src="Resources/Images/meetingimg.svg" class="meeting-img" alt="...">
+            </div>
+        </body>
+    </NotAuthorized>
+</AuthorizeView>
 
-        <AuthorizeView>
-            <Authorized>
+<AuthorizeView>
+    <Authorized>
+      
+                <div class="card">
+                    <img class="card-img-top" src="@context.User.Claims.SingleOrDefault(x=> x.Type == "picture")?.Value" Style="width:200px;" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">User Information:</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Name: </b>@context.User.AsApplicationUser().Name</li>
+                        <li class="list-group-item"><b>Email: </b>@context.User.AsApplicationUser().Email</li>
+                    </ul>
+                </div>
+
                 @{
                     var applicationUserId = context.User.AsApplicationUser().UserId;
                     var applicationUserName = context.User.AsApplicationUser().Name;
@@ -62,22 +76,22 @@
                     Task test = addUserToDatabase(userObject);
                 }
 
-            </Authorized>
-        </AuthorizeView>
+    </Authorized>
+</AuthorizeView>
 
-        @code{
-            public async Task addUserToDatabase(UserModel user)
-            {
-                if (await userService.Get(user.UserId) == null)
-                {
-                    Console.WriteLine("Registering new user..." + user.UserId);
-                    await userService.Add(user);
-                }
-                else
-                {
-                    Console.WriteLine("Updating user last login date...");
-                    await userService.Update(user);
-                }
-            }
-
+@code{
+    public async Task addUserToDatabase(UserModel user)
+    {
+        if (await userService.Get(user.UserId) == null)
+        {
+            Console.WriteLine("Registering new user..." + user.UserId);
+            await userService.Add(user);
         }
+        else
+        {
+            Console.WriteLine("Updating user last login date...");
+            await userService.Update(user);
+        }
+    }
+
+}
