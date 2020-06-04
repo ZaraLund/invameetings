@@ -53,8 +53,6 @@
                         <td><input type="button" class="btn btn-danger" @onclick="@(() => PrepareForDelete(eventItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
                         <td><input type="button" class="btn btn-info" @onclick="@(async () => await PrepareForView(eventItem))" data-toggle="modal" data-target="#myModal" value="Participants" /></td>
-
-
                     </tr>
                 }
             </tbody>
@@ -94,13 +92,12 @@
         </EventDetail>
 
 
+@code {
+    List<ParticipantModel> participantList;
+    List<EventModel> eventList;
 
-        @code {
-            List<ParticipantModel> participantList;
-            List<EventModel> eventList;
-
-            EventModel eventObject = new EventModel();
-            string customHeader = string.Empty;
+    EventModel eventObject = new EventModel();
+    string customHeader = string.Empty;
 
     protected override async Task OnInitializedAsync() {
         eventList = await eventService.Get();

@@ -28,6 +28,8 @@
         var token = await HttpContext.GetTokenAsync("access_token");
     }
 
+
+
     <script>
         function ShowModal(modalId) {
             $('#' + modalId).modal('show');
@@ -61,7 +63,21 @@
         }
     </script>
 
-    
+    <script>
+        function ShowAlert() {
+            var x = document.getElementById("alertID");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+
+                setTimeout(function () {
+                    document.getElementById('alertID').style.display = 'none';
+                }, 2000);
+            } else {
+                document.getElementById('alertID').style.display = 'none';
+            }
+        }
+    </script>
+
     <app>
         <component type="typeof(App)" render-mode="ServerPrerendered" param-AccessToken="token" />
     </app>

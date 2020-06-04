@@ -20,12 +20,12 @@ else
 
     <div class="container mt-3" style="float:left;">
         <div class="md-form mt-0" style="width: 200px; margin-bottom: 2%">
-            <input class="form-control" 
+            <input class="form-control"
                    type="text"
                    id="myInput"
                    onkeyup="myFunction()" placeholder="Search for event.." title="Type in a name">
         </div>
-            
+
         <div class="table-responsive-sm">
             <table class="table table-striped" id="myTable">
                 <thead>
@@ -48,21 +48,29 @@ else
                             <td>@eventItem.description</td>
                             <td>
                                 <input type="button"
-                                       class="btn btn-primary" @onclick="@(() => addUserToEvent(eventItem))"
+                                       class="btn btn-primary"
+                                       @onclick="@(() => addUserToEvent(eventItem))"
                                        value="Join" />
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+
+            <div class="alert alert-success" id="alertID" style="display:none;">
+                <strong>Success!</strong> You have join the event.
+            </div>
+
         </div>
     </div>
 }
 
+
+
 <AuthorizeView>
     <Authorized>
 
-
+     
 
         @{
             var applicationUserId = context.User.AsApplicationUser().UserId;
@@ -82,6 +90,8 @@ else
                 eventList = await eventService.Get();
             }
 
+
+
             private async Task addUserToEvent(EventModel task)
             {
                 userEventObject.ApplicationTime = DateTime.Now;
@@ -89,7 +99,8 @@ else
                 userEventObject.EventId = eventObject.EventId;
                 await userEventService.Add(userEventObject);
                 DataChanged?.Invoke();
-                eventList = await eventService.Get();
+                //check if the event is null then do the alert
+                await jsRuntime.InvokeVoidAsync("ShowAlert");
 
             }
         }

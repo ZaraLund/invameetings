@@ -7,10 +7,11 @@ namespace InvaMeetings.Web.Model
     [Table("Event_User")]
     public class UserEventModel
     {
-        [Key]
+       
         public string UserId { get; set; }
-        [ForeignKey("[UserId]")]
+        [Key]
         public Guid EventId { get; set; }
+        [ForeignKey("[EventId]")]
         public DateTime ApplicationTime { get; set; }
 
     }

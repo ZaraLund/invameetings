@@ -7,6 +7,7 @@ using InvaMeetings.Web.Model;
 using System.Linq;
 using System.Data;
 
+
 namespace InvaMeetings.Web.Controllers
 {
     public interface UserEventService
@@ -33,26 +34,22 @@ namespace InvaMeetings.Web.Controllers
 
 
         public async Task<UserEventModel> Add(UserEventModel userEventModel)
-        {
-            if (_context.userEventModelList.Where(e => e.EventId == userEventModel.EventId && e.UserId == userEventModel.UserId).Any())
-            {
-                _context.userEventModelList.Add(userEventModel);
-                await _context.SaveChangesAsync();
-                return userEventModel;
-            }
-            else
-            {
-                Console.WriteLine("Exist");
-                return null;
-            }
+        { 
+                //Lamda for checking if the row alrady exist 
+                if (_context.userEventModelList.Where(e => e.EventId == userEventModel.EventId && e.UserId == userEventModel.UserId).Any())
+                {
+                    Console.WriteLine("Exist");
+                    return null;
+                }
+                else
+                {
+                    _context.userEventModelList.Add(userEventModel);
+                    await _context.SaveChangesAsync();
+                    return userEventModel;
+                }
+   
         }
-        /*
-        from em in _context.userEventModelList
-              join u in _context.userList
-                  on em.UserId equals u.UserId
-              where em.EventId == id
-              select new ParticipantModel
-              */
+   
         public async Task<UserEventModel> Update(UserEventModel userEventModel)
         {
             _context.Entry(userEventModel).State = EntityState.Modified;
