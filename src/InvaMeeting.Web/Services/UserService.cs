@@ -45,7 +45,6 @@ namespace InvaMeetings.Web.Controllers
             }
         }
 
-
         public async Task<UserModel> Add(UserModel userModel)
         {
             _context.userList.Add(userModel);
