@@ -72,6 +72,7 @@
                     userObject.FamilyName = applicationUserFamilyName;
                     userObject.Email = applicationUserEmail;
                     userObject.LastLoginDate = DateTime.Now;
+                    userObject.Permissions = "User";
 
                     Task addUser = addUserToDatabase(userObject);
                 }
@@ -89,8 +90,8 @@
         }
         else
         {
-            Console.WriteLine("Updating user last login date...");
-            await userService.Update(user);
+            Console.WriteLine("Users already exist");
+          //  await userService.Update(user);
         }
     }
 

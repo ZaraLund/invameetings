@@ -6,9 +6,34 @@
 @inject IJSRuntime jsRuntime
 @inject UserEventService userEventService
 @inject EventController eventService
+@inject UserService userService
 
 @attribute [Authorize]
+
+@{
+    getUserObject();
+}
+
+@code {
+    UserModel userObject;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private async Task getUserObject()
+    {
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            userObject = await userService.Get(user.AsApplicationUser().UserId);
+        }
+    }
+}
+
+
 <h1>Event List</h1>
+
 
 @if (eventList == null)
 {
@@ -18,51 +43,59 @@
 else
 {
 
-    <div class="container mt-3" style="float:left;">
-        <div class="md-form mt-0" style="width: 200px; margin-bottom: 2%">
-            <input class="form-control"
-                   type="text"
-                   id="myInput"
-                   onkeyup="myFunction()" placeholder="Search for event.." title="Type in a name">
-        </div>
+<div class="container mt-3" style="float:left;">
 
-        <div class="table-responsive-sm">
-            <table class="table table-striped" id="myTable">
-                <thead>
-                    <tr>
-                        <th>Name:</th>
-                        <th>Address:</th>
-                        <th>Date:</th>
-                        <th>Description:</th>
-                        <th>Join:</th>
-                    </tr>
-                </thead>
-                <tbody id="myTable">
-                    @foreach (var eventItem in eventList)
-                    {
-                        <tr>
+    @if (userObject != null && userObject.Permissions.Equals("Admin"))
+    {
+    <NavLink class="btn btn-primary" style="margin-bottom: 4px;" href="eventpage">
+        <span class="oi oi-cog" aria-hidden="true"></span> Event Administration
+    </NavLink>
+    }
 
-                            <td>@eventItem.name</td>
-                            <td>@eventItem.address</td>
-                            <td>@eventItem.date</td>
-                            <td>@eventItem.description</td>
-                            <td>
-                                <input type="button"
-                                       class="btn btn-primary"
-                                       @onclick="@(() => addUserToEvent(eventItem))"
-                                       value="Join" />
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            <div class="alert alert-success" id="alertID" style="display:none;">
-                <strong>Success!</strong> You have join the event.
-            </div>
-
-        </div>
+    <div class="md-form mt-0" style="width: 200px; margin-bottom: 2%">
+        <input class="form-control"
+               type="text"
+               id="myInput"
+               onkeyup="myFunction()" placeholder="Search for event.." title="Type in a name">
     </div>
+
+    <div class="table-responsive-sm">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th>Name:</th>
+                    <th>Address:</th>
+                    <th>Date:</th>
+                    <th>Description:</th>
+                    <th>Join:</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var eventItem in eventList)
+                {
+                    <tr>
+
+                        <td>@eventItem.name</td>
+                        <td>@eventItem.address</td>
+                        <td>@eventItem.date</td>
+                        <td>@eventItem.description</td>
+                        <td>
+                            <input type="button"
+                                   class="btn btn-primary"
+                                   @onclick="@(() => addUserToEvent(eventItem))"
+                                   value="Join" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="alert alert-success" id="alertID" style="display:none;">
+            <strong>Success!</strong> You have join the event.
+        </div>
+
+    </div>
+</div>
 }
 
 
@@ -70,7 +103,7 @@ else
 <AuthorizeView>
     <Authorized>
 
-     
+
 
         @{
             var applicationUserId = context.User.AsApplicationUser().UserId;
